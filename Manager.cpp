@@ -98,6 +98,7 @@ void Manager::PrintErrorCode(int num)
 void Manager::load(const std::string& subtitleFile) {
     std::ifstream file(subtitleFile);
     std::string time, subtitle;
+    flog << "===== LOAD =====" << std::endl;
 
     if (!file.is_open()) {
         PrintErrorCode(100);
@@ -118,9 +119,9 @@ void Manager::load(const std::string& subtitleFile) {
 
         flog << time << " - " << subtitle << std::endl;
     }
+    flog << "===============\n" << std::endl;
 
     file.close();
-    PrintSuccess("LOAD");
 }
 
 // QPOP
@@ -158,6 +159,11 @@ void Manager::print(int sectionNumber) {
         SectionListNode* current = sectionList->getHead();
         while (current != nullptr && current->getSectionNumber() != sectionNumber) {
             current = current->getNext();
+        }
+
+        if (current == nullptr) {
+            PrintErrorCode(300);
+            return;
         }
 
         flog << "===== PRINT =====" << std::endl;
