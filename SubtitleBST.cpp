@@ -23,9 +23,7 @@ void SubtitleBST::insert(const std::string& time, const std::string& subtitle) {
 
 // 중위 순회 방식으로 트리의 자막 데이터를 출력하는 함수
 void SubtitleBST::print(std::ofstream& out) {
-    out << "===== PRINT =====" << std::endl;
     inOrder(root, out);
-    out << "===============" << std::endl;
 }
 
 // 특정 시간에 해당하는 노드를 찾는 함수

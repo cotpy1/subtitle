@@ -51,7 +51,7 @@ void Manager::Run(const std::string& commandFile)
         } else if (cmd == "QPOP") {
             qpop();
         } else if (cmd == "PRINT") {
-            int sectionNumber = 0;  // 기본값으로 0 설정 (섹션 번호가 주어지지 않은 경우)
+            int sectionNumber = -1;  // 기본값으로 -1 설정 (섹션 번호가 주어지지 않은 경우)
             if (iss >> sectionNumber) {
                 print(sectionNumber);
             } else {
@@ -149,11 +149,12 @@ void Manager::print(int sectionNumber) {
         return;
     }
 
-    if (sectionNumber == 0) {
+    if (sectionNumber == -1) {
         // 섹션 넘버가 주어지지 않은 경우 BST전체를 출력
         flog << "===== PRINT =====" << std::endl;
         flog << "SubtitleBST:" << std::endl;
         bst->print(flog);
+        flog << "===============\n" << std::endl;
     } else {
         // 섹션 번호가 주어진 경우 해당 섹션을 출력
         SectionListNode* current = sectionList->getHead();
