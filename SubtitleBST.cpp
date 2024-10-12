@@ -156,7 +156,7 @@ void SubtitleBST::deleteUnderHelper(SubtitleBSTNode*& node, const std::string& t
         node = deleteNodeRec(node, node->getTime());
         deleteUnderHelper(node, time);
     } else {
-        deleteUnderHelper(node->getLeftRef(), time);  // getLeftRef()를 사용하여 참조 전달
+        deleteUnderHelper(node->getLeftRef(), time);  
     }
 }
 

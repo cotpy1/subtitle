@@ -116,11 +116,17 @@ void Manager::load(const std::string& subtitleFile) {
             file.close();
             return;
         }
-
-        flog << time << " - " << subtitle << std::endl;
     }
-    flog << "===============\n" << std::endl;
 
+    // 모든 푸시가 완료된 후에 큐를 출력
+    if (flog.is_open()) {
+        queue->printQueue(flog);  // flog 스트림에 출력
+        flog.flush();  // 로그 파일 강제 플러시
+    } else {
+        std::cerr << "Error: log.txt is not open." << std::endl;
+    }
+
+    flog << "===============\n" << std::endl;
     file.close();
 }
 
@@ -174,7 +180,7 @@ void Manager::print(int sectionNumber) {
             flog << subtitleNode->getTime() << " - " << subtitleNode->getSubtitle() << "\n";
             subtitleNode = subtitleNode->getNext();
         }
-        flog << "===============\n" << std::endl;
+        flog << "===================\n" << std::endl;
         flog.flush();  // 로그를 강제로 기록
         
     }

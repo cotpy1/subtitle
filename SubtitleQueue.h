@@ -13,8 +13,8 @@ private:
 
 public:
     // 생성자 및 소멸자
-    SubtitleQueue(int size);
-    ~SubtitleQueue();  // 소멸자 추가
+    SubtitleQueue(int maxSize = 100);  // 기본값을 100으로 설정
+    ~SubtitleQueue();
 
     // 큐가 비어 있는지 확인하는 함수
     bool isEmpty();
@@ -28,8 +28,8 @@ public:
     // 자막 데이터를 큐에서 제거하고 반환하는 함수
     bool pop(std::string &time, std::string &subtitle);
 
-    // 디버깅용 큐의 모든 내용을 출력하는 함수 (선택 사항)
-    void printQueue();  // 디버깅 및 상태 확인용 메서드 추가
+    // 큐의 모든 내용을 출력하는 함수
+    void printQueue(std::ostream& out) const;
 };
 
 #endif

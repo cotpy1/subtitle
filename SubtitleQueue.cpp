@@ -1,12 +1,13 @@
 #include "SubtitleQueue.h"
 #include <iostream>
+#include <fstream>
 
-// 생성자: 큐를 초기화하고 크기를 설정
-SubtitleQueue::SubtitleQueue(int size) {
+// 생성자: 큐를 초기화
+SubtitleQueue::SubtitleQueue(int maxSize) : maxSize(maxSize) {
     front = nullptr;
     rear = nullptr;
-    maxSize = size;
     currentSize = 0;
+
 }
 
 // 소멸자: 모든 노드를 삭제하여 메모리 해제
@@ -72,12 +73,15 @@ bool SubtitleQueue::pop(std::string &time, std::string &subtitle) {
     return true;
 }
 
-// 디버깅용: 큐의 모든 내용을 출력하는 함수 (선택 사항)
-void SubtitleQueue::printQueue() {
+// 큐의 모든 내용을 출력하는 함수
+void SubtitleQueue::printQueue(std::ostream& out) const {
     SubtitleQueueNode* current = front;
-    std::cout << "Queue contents: " << std::endl;
+
+    // 큐의 모든 노드를 순회하면서 출력
     while (current != nullptr) {
-        std::cout << current->getTime() << " - " << current->getSubtitle() << std::endl;
+        out << current->getTime() << " - " << current->getSubtitle() << std::endl;
         current = current->getNext();
     }
+
 }
+
