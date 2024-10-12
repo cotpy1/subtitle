@@ -67,7 +67,7 @@ void Manager::Run(const std::string& commandFile)
             iss >> deleteType >> time;
             deleteSubtitles(deleteType, time);
         } else if (cmd == "EXIT") {
-            flog << "Exiting program." << std::endl;
+            PrintSuccess("EXIT");
             flog.flush();
             exit(0); // exit program
         } else {
