@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-// 생성자: 큐를 초기화
+// constructor: initialize queue
 SubtitleQueue::SubtitleQueue(int maxSize) : maxSize(maxSize) {
     front = nullptr;
     rear = nullptr;
@@ -10,39 +10,39 @@ SubtitleQueue::SubtitleQueue(int maxSize) : maxSize(maxSize) {
 
 }
 
-// 소멸자: 모든 노드를 삭제하여 메모리 해제
+// destructor: delete all nodes to free memory
 SubtitleQueue::~SubtitleQueue() {
     while (!isEmpty()) {
         std::string tempTime, tempSubtitle;
-        pop(tempTime, tempSubtitle);  // 큐에서 데이터를 꺼내면서 노드를 삭제
+        pop(tempTime, tempSubtitle);  // pop data from queue and delete node
     }
 }
 
-// 큐가 비어 있는지 확인
-bool SubtitleQueue::isEmpty() {
+// check if queue is empty
+inline bool SubtitleQueue::isEmpty() {
     return currentSize == 0;
 }
 
-// 큐가 가득 찼는지 확인
-bool SubtitleQueue::isFull() {
+// check if queue is full
+inline bool SubtitleQueue::isFull() {
     return currentSize == maxSize;
 }
 
-// 큐에 자막 데이터를 추가하는 함수
+// add subtitle data to queue
 bool SubtitleQueue::push(std::string time, std::string subtitle) {
     if (isFull()) {
-        return false;  // 큐가 가득 찼다면 추가할 수 없음
+        return false;  // cannot add if queue is full
     }
 
     SubtitleQueueNode* newNode = new SubtitleQueueNode(time, subtitle);
 
     if (isEmpty()) {
-        // 큐가 비어 있을 때
+        // queue is empty
         front = newNode;
         rear = newNode;
     } else {
-        // 큐에 이미 노드가 있을 때
-        rear->setNext(newNode);  // rear의 다음 노드를 설정
+        // queue already has nodes
+        rear->setNext(newNode);  // set next node of rear
         rear = newNode;
     }
 
@@ -50,18 +50,18 @@ bool SubtitleQueue::push(std::string time, std::string subtitle) {
     return true;
 }
 
-// 큐에서 자막 데이터를 제거하는 함수
+// remove subtitle data from queue
 bool SubtitleQueue::pop(std::string &time, std::string &subtitle) {
     if (isEmpty()) {
-        return false;  // 큐가 비어 있다면 제거할 수 없음
+        return false;  // cannot remove if queue is empty
     }
 
-    // 앞쪽 노드의 데이터를 복사
+    // copy data of front node
     SubtitleQueueNode* temp = front;
     time = temp->getTime();
     subtitle = temp->getSubtitle();
 
-    // 앞쪽 노드를 큐에서 제거
+    // remove front node from queue
     front = front->getNext();
     delete temp;
 
@@ -73,11 +73,11 @@ bool SubtitleQueue::pop(std::string &time, std::string &subtitle) {
     return true;
 }
 
-// 큐의 모든 내용을 출력하는 함수
+// print all data in queue
 void SubtitleQueue::printQueue(std::ostream& out) const {
     SubtitleQueueNode* current = front;
 
-    // 큐의 모든 노드를 순회하면서 출력
+    // traverse all nodes in queue and print data
     while (current != nullptr) {
         out << current->getTime() << " - " << current->getSubtitle() << std::endl;
         current = current->getNext();

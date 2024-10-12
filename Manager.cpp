@@ -9,7 +9,7 @@ Manager::Manager()
     bst = new SubtitleBST();
     sectionList = new SectionList();
 
-    // log.txt 파일 열기
+    // open log.txt
     flog.open("log.txt");
     if (!flog.is_open()) {
         std::cerr << "Error: Could not open log.txt for writing!" << std::endl;
@@ -23,7 +23,7 @@ Manager::~Manager()
     delete bst; 
     delete sectionList;
 
-    // log.txt 파일 닫기
+    // close log.txt
     if (flog.is_open()) {
         flog.close();
     }
@@ -31,7 +31,7 @@ Manager::~Manager()
 
 void Manager::Run(const std::string& commandFile)
 {
-    // Open command file
+    // open command file
     std::ifstream fcmd(commandFile);
     std::string command;
 
@@ -40,22 +40,22 @@ void Manager::Run(const std::string& commandFile)
         exit(-1);
     }
 
-    // Read and Run commands
+    // read and run commands
     while (getline(fcmd, command)) {
         std::istringstream iss(command);
         std::string cmd;
-        iss >> cmd;  // 명령어를 추출
+        iss >> cmd;  // extract command
 
         if (cmd == "LOAD") {
             load("subtitle.txt");
         } else if (cmd == "QPOP") {
             qpop();
         } else if (cmd == "PRINT") {
-            int sectionNumber = -1;  // 기본값으로 -1 설정 (섹션 번호가 주어지지 않은 경우)
+            int sectionNumber = -1;  // default value -1 (if section number is not given)
             if (iss >> sectionNumber) {
                 print(sectionNumber);
             } else {
-                print();  // 전체를 출력
+                print();  // print all
             }
         } else if (cmd.find("SECTION") == 0) {
             int sectionNumber;
@@ -69,16 +69,16 @@ void Manager::Run(const std::string& commandFile)
         } else if (cmd == "EXIT") {
             flog << "Exiting program." << std::endl;
             flog.flush();
-            exit(0); // 프로그램 정상 종료
+            exit(0); // exit program
         } else {
-            PrintErrorCode(1000); // 잘못된 명령어 처리
+            PrintErrorCode(1000); // wrong command
         }
     }
 
     fcmd.close();
 }
 
-// 성공 메시지 출력
+// print success message
 void Manager::PrintSuccess(const std::string& cmd)
 {
     flog << "===== " << cmd << " =====" << std::endl;
@@ -86,7 +86,7 @@ void Manager::PrintSuccess(const std::string& cmd)
     flog << "===============\n" << std::endl;
 }
 
-// 에러 코드 출력
+// print error code
 void Manager::PrintErrorCode(int num)
 {
     flog << "===== ERROR =====" << std::endl;
@@ -118,10 +118,10 @@ void Manager::load(const std::string& subtitleFile) {
         }
     }
 
-    // 모든 푸시가 완료된 후에 큐를 출력
+    // print queue after all push is done
     if (flog.is_open()) {
-        queue->printQueue(flog);  // flog 스트림에 출력
-        flog.flush();  // 로그 파일 강제 플러시
+        queue->printQueue(flog);  // print to flog stream
+        flog.flush();  // flush log file
     } else {
         std::cerr << "Error: log.txt is not open." << std::endl;
     }
@@ -156,13 +156,13 @@ void Manager::print(int sectionNumber) {
     }
 
     if (sectionNumber == -1) {
-        // 섹션 넘버가 주어지지 않은 경우 BST전체를 출력
+        // if section number is not given, print whole BST
         flog << "===== PRINT =====" << std::endl;
         flog << "SubtitleBST:" << std::endl;
         bst->print(flog);
         flog << "===============\n" << std::endl;
     } else {
-        // 섹션 번호가 주어진 경우 해당 섹션을 출력
+        // if section number is given, print that section
         SectionListNode* current = sectionList->getHead();
         while (current != nullptr && current->getSectionNumber() != sectionNumber) {
             current = current->getNext();
@@ -180,12 +180,12 @@ void Manager::print(int sectionNumber) {
             flog << subtitleNode->getTime() << " - " << subtitleNode->getSubtitle() << "\n";
             subtitleNode = subtitleNode->getNext();
         }
-        flog << "===================\n" << std::endl;
-        flog.flush();  // 로그를 강제로 기록
+        flog << "=================\n" << std::endl;
+        flog.flush();  // flush log file
         
     }
 
-    flog.flush();  // 강제로 플러시
+    flog.flush();  // flush log file
     
 }
 

@@ -3,15 +3,15 @@
 #include <string>
 #include <fstream>
 
-// 전방 선언 (forward declaration)
+// forward declaration
 class SectionList;
 
 class SubtitleBST
 {
 private:
-    SubtitleBSTNode* root;  // 트리의 루트 노드
+    SubtitleBSTNode* root;  // root node of tree
 
-    // 헬퍼 메서드들
+    // helper methods
     SubtitleBSTNode* insertNode(SubtitleBSTNode* node, const std::string& time, const std::string& subtitle);
     void inOrder(SubtitleBSTNode* node, std::ofstream& out);
     SubtitleBSTNode* searchNode(SubtitleBSTNode* node, const std::string& time);
@@ -19,7 +19,7 @@ private:
     SubtitleBSTNode* findMin(SubtitleBSTNode* node);
     void deleteTree(SubtitleBSTNode* node);
 
-    // SectionList 관련 헬퍼 메서드들
+    // SectionList related helper methods
     void deleteUnderHelper(SubtitleBSTNode*& node, const std::string& time);
     void addSubtitlesToSectionHelper(SubtitleBSTNode* node, SectionList* sectionList, int sectionNumber, const std::string& startTime, const std::string& endTime);
 
@@ -27,23 +27,23 @@ public:
     SubtitleBST();
     ~SubtitleBST();
 
-    // SectionList와 관련된 메서드들
+    // SectionList related methods
     void addSubtitlesToSection(SectionList* sectionList, int sectionNumber, const std::string& startTime, const std::string& endTime);
     void deleteEqual(const std::string& time);
     void deleteUnder(const std::string& time);
 
-    // 트리의 루트 노드를 반환하는 함수
+    // return root node of tree
     SubtitleBSTNode* getRoot();
 
-    // 트리에 노드를 삽입하는 함수
+    // insert node to tree
     void insert(const std::string& time, const std::string& subtitle);
 
-    // 트리의 데이터를 출력하는 함수 (중위 순회)
+    // print data of tree (in-order traversal)
     void print(std::ofstream& out);
 
-    // 특정 시간을 기준으로 노드를 찾는 함수
+    // search node with given time
     SubtitleBSTNode* search(const std::string& time);
 
-    // 특정 시간을 기준으로 노드를 삭제하는 함수
+    // delete node with given time
     void deleteNode(const std::string& time);
 };

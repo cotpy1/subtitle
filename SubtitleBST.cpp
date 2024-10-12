@@ -3,40 +3,40 @@
 #include <iostream>
 #include <fstream>
 
-// 기본 생성자: 트리의 루트 노드를 nullptr로 초기화
+// default constructor: initialize root node to nullptr
 SubtitleBST::SubtitleBST() : root(nullptr) {}
 
-// 소멸자: 트리의 모든 노드를 삭제하여 메모리 해제
+// destructor: delete all nodes of tree to free memory
 SubtitleBST::~SubtitleBST() {
     deleteTree(root);
 }
 
-// 트리의 루트 노드를 반환
+// return root node of tree
 SubtitleBSTNode* SubtitleBST::getRoot() {
     return root;
 }
 
-// 트리에 노드를 삽입하는 함수
+// insert node to tree
 void SubtitleBST::insert(const std::string& time, const std::string& subtitle) {
     root = insertNode(root, time, subtitle);
 }
 
-// 중위 순회 방식으로 트리의 자막 데이터를 출력하는 함수
+// print subtitles of tree in in-order traversal
 void SubtitleBST::print(std::ofstream& out) {
     inOrder(root, out);
 }
 
-// 특정 시간에 해당하는 노드를 찾는 함수
+// search node with given time
 SubtitleBSTNode* SubtitleBST::search(const std::string& time) {
     return searchNode(root, time);
 }
 
-// 특정 시간에 해당하는 노드를 삭제하는 함수
+// delete node with given time
 void SubtitleBST::deleteNode(const std::string& time) {
     root = deleteNodeRec(root, time);
 }
 
-// 트리의 메모리를 해제하는 함수 (재귀적)
+// delete all nodes of tree to free memory (recursively)
 void SubtitleBST::deleteTree(SubtitleBSTNode* node) {
     if (node != nullptr) {
         deleteTree(node->getLeft());
@@ -45,7 +45,7 @@ void SubtitleBST::deleteTree(SubtitleBSTNode* node) {
     }
 }
 
-// 노드를 삽입하는 함수 (재귀적)
+// insert node to tree (recursively)
 SubtitleBSTNode* SubtitleBST::insertNode(SubtitleBSTNode* node, const std::string& time, const std::string& subtitle) {
     if (node == nullptr) {
         return new SubtitleBSTNode(time, subtitle);
@@ -60,12 +60,12 @@ SubtitleBSTNode* SubtitleBST::insertNode(SubtitleBSTNode* node, const std::strin
     return node;
 }
 
-// SectionList에 자막을 추가하는 함수
+// add subtitles to SectionList
 void SubtitleBST::addSubtitlesToSection(SectionList* sectionList, int sectionNumber, const std::string& startTime, const std::string& endTime) {
     addSubtitlesToSectionHelper(root, sectionList, sectionNumber, startTime, endTime);
 }
 
-// 섹션 리스트에 자막을 추가하는 헬퍼 함수
+// add subtitles to SectionList helper function
 void SubtitleBST::addSubtitlesToSectionHelper(SubtitleBSTNode* node, SectionList* sectionList, int sectionNumber, const std::string& startTime, const std::string& endTime) {
     if (node == nullptr) return;
 
@@ -78,7 +78,7 @@ void SubtitleBST::addSubtitlesToSectionHelper(SubtitleBSTNode* node, SectionList
     addSubtitlesToSectionHelper(node->getRight(), sectionList, sectionNumber, startTime, endTime);
 }
 
-// 중위 순회 방식으로 트리를 탐색하며 출력 (재귀적)
+// in-order traversal to print tree (recursively)
 void SubtitleBST::inOrder(SubtitleBSTNode* node, std::ofstream& out) {
     if (node == nullptr) return;
 
@@ -87,7 +87,7 @@ void SubtitleBST::inOrder(SubtitleBSTNode* node, std::ofstream& out) {
     inOrder(node->getRight(), out);
 }
 
-// 특정 시간에 해당하는 노드를 찾는 함수 (재귀적)
+// search node with given time (recursively)
 SubtitleBSTNode* SubtitleBST::searchNode(SubtitleBSTNode* node, const std::string& time) {
     if (node == nullptr || node->getTime() == time) {
         return node;
@@ -100,7 +100,7 @@ SubtitleBSTNode* SubtitleBST::searchNode(SubtitleBSTNode* node, const std::strin
     }
 }
 
-// 특정 시간에 해당하는 노드를 삭제하는 함수 (재귀적)
+// delete node with given time (recursively)
 SubtitleBSTNode* SubtitleBST::deleteNodeRec(SubtitleBSTNode* node, const std::string& time) {
     if (node == nullptr) return nullptr;
 
@@ -109,7 +109,7 @@ SubtitleBSTNode* SubtitleBST::deleteNodeRec(SubtitleBSTNode* node, const std::st
     } else if (time > node->getTime()) {
         node->setRight(deleteNodeRec(node->getRight(), time));
     } else {
-        // 삭제할 노드를 찾은 경우
+        // if node to delete is found
         if (node->getLeft() == nullptr) {
             SubtitleBSTNode* temp = node->getRight();
             delete node;
@@ -120,7 +120,7 @@ SubtitleBSTNode* SubtitleBST::deleteNodeRec(SubtitleBSTNode* node, const std::st
             return temp;
         }
 
-        // 양쪽 자식이 모두 있는 경우
+        // if both children are present
         SubtitleBSTNode* minNode = findMin(node->getRight());
         node->setTime(minNode->getTime());
         node->setSubtitle(minNode->getSubtitle());
@@ -130,7 +130,7 @@ SubtitleBSTNode* SubtitleBST::deleteNodeRec(SubtitleBSTNode* node, const std::st
     return node;
 }
 
-// 트리의 최소값(가장 왼쪽 노드)을 찾는 함수
+// find minimum value (leftmost node) of tree
 SubtitleBSTNode* SubtitleBST::findMin(SubtitleBSTNode* node) {
     while (node->getLeft() != nullptr) {
         node = node->getLeft();
@@ -138,17 +138,17 @@ SubtitleBSTNode* SubtitleBST::findMin(SubtitleBSTNode* node) {
     return node;
 }
 
-// 특정 시간과 일치하는 노드를 삭제
+// delete node with given time
 void SubtitleBST::deleteEqual(const std::string& time) {
     root = deleteNodeRec(root, time);
 }
 
-// 특정 시간보다 작은 모든 노드를 삭제
+// delete all nodes with time less than given time
 void SubtitleBST::deleteUnder(const std::string& time) {
     deleteUnderHelper(root, time);
 }
 
-// 특정 시간보다 작은 노드를 삭제하는 헬퍼 함수
+// delete all nodes with time less than given time helper function
 void SubtitleBST::deleteUnderHelper(SubtitleBSTNode*& node, const std::string& time) {
     if (node == nullptr) return;
 

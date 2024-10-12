@@ -1,15 +1,15 @@
 #include "SectionList.h"
 #include <iostream>
 
-// 생성자: 섹션 리스트의 헤드 포인터를 초기화
+// constructor: initialize head pointer of section list
 SectionList::SectionList() : head(nullptr) {}
 
-// 소멸자: 리스트의 모든 노드들을 삭제하여 메모리 해제
+// destructor: delete all nodes of list to free memory
 SectionList::~SectionList()
 {
     SectionListNode* current = head;
     while (current != nullptr) {
-        // 현재 섹션의 자막 노드들 삭제
+        // delete subtitles of current section
         SubtitleListNode* subtitleNode = current->getFirstNode();
         while (subtitleNode != nullptr) {
             SubtitleListNode* temp = subtitleNode;
@@ -17,30 +17,30 @@ SectionList::~SectionList()
             delete temp;
         }
 
-        // 현재 섹션 노드 삭제
+        // delete current section node
         SectionListNode* temp = current;
         current = current->getNext();
         delete temp;
     }
 }
 
-// 헤드 노드를 반환
+// return head node
 SectionListNode* SectionList::getHead()
 {
     return head;
 }
 
-// 섹션 추가 (Insert)
+// add section (Insert)
 void SectionList::addSection(int sectionNumber)
 {
-    // 새로운 섹션 노드 생성
+    // create new section node
     SectionListNode* newNode = new SectionListNode(sectionNumber);
 
-    // 리스트가 비어 있으면 새 노드를 헤드로 설정
+    // if list is empty, set new node as head
     if (head == nullptr) {
         head = newNode;
     } else {
-        // 리스트가 비어 있지 않으면 마지막에 추가
+        // if list is not empty, add new node to the end
         SectionListNode* current = head;
         while (current->getNext() != nullptr) {
             current = current->getNext();
@@ -49,12 +49,12 @@ void SectionList::addSection(int sectionNumber)
     }
 }
 
-// 섹션 검색 (Search)
+// search section (Search)
 SectionListNode* SectionList::searchSection(int sectionNumber)
 {
     SectionListNode* current = head;
 
-    // 주어진 섹션 번호를 가진 노드를 찾음
+    // find node with given section number
     while (current != nullptr) {
         if (current->getSectionNumber() == sectionNumber) {
             return current;
@@ -62,18 +62,18 @@ SectionListNode* SectionList::searchSection(int sectionNumber)
         current = current->getNext();
     }
 
-    // 섹션 번호를 찾지 못한 경우 nullptr 반환
+    // if section number is not found, return nullptr
     return nullptr;
 }
 
+// add subtitle
 void SectionList::addSubtitle(int sectionNumber, const std::string& time, const std::string& subtitle) {
-    // 실제 메서드 구현 내용
     SectionListNode* current = searchSection(sectionNumber);
     if (current == nullptr) {
         std::cerr << "Error: Section not found." << std::endl;
         return;
     }
-
+    // create new subtitle node
     SubtitleListNode* newSubtitle = new SubtitleListNode(time, subtitle);
     if (current->getFirstNode() == nullptr) {
         current->setFirstNode(newSubtitle);
